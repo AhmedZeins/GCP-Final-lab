@@ -1,8 +1,18 @@
 FROM python:3.7
-WORKDIR /app
-RUN apt-get update
-RUN apt-get install python3-pip -y
-COPY requirements.txt .
+
+COPY . /usr/app
+
+WORKDIR /usr/app
+
 RUN pip install -r requirements.txt
-COPY . .
-ENTRYPOINT [ "python3" ,"hello.py" ]
+
+ENV ENVIRONMENT=DEV
+ENV HOST=localhost
+ENV PORT=8000
+ENV REDIS_HOST=localhost
+ENV REDIS_PORT=6379
+ENV REDIS_DB=0
+
+EXPOSE 8000
+
+CMD ["python3", "hello.py"]

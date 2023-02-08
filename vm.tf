@@ -12,10 +12,10 @@ resource "google_project_iam_member" "cluster-admin" {
 
 
 #compute instance
-resource "google_compute_instance" "private-management-vm" {
-  name         = "private-management-vm"
-  machine_type = "f1-micro"
-  zone         = "europe-west3" #var.region
+resource "google_compute_instance" "private-vm" {
+  name         = "private-vm"
+  machine_type = "e2-micro"
+  zone         = "asia-east1-a" 
  
   boot_disk {
     initialize_params {
@@ -28,9 +28,7 @@ resource "google_compute_instance" "private-management-vm" {
   tags = ["management-vm"]
   network_interface {
     subnetwork = google_compute_subnetwork.management_subnet.id
-    access_config {
-      nat_ip = google_compute_address.nat_ip.address
-    }
+   
   }
   service_account {
     email = google_service_account.vm-sa.email

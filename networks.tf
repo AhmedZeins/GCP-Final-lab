@@ -8,14 +8,14 @@ resource "google_compute_network" "vpc" {
 resource "google_compute_subnetwork" "management_subnet" {
   name = "management-subnet"
   ip_cidr_range = "10.0.0.0/24"
-  region = "europe-west3"
+  region = "asia-east1"
   network = google_compute_network.vpc.self_link
 }
 
 resource "google_compute_subnetwork" "restricted_subnet" {
   name = "restricted-subnet"
   ip_cidr_range = "10.1.0.0/24"
-  region = "europe-west3"
+  region = "asia-east1"
   network = google_compute_network.vpc.self_link
 }
 
@@ -24,7 +24,7 @@ resource "google_compute_firewall" "management_subnet_firewall" {
   name    = "management-subnet-firewall"
   network = google_compute_network.vpc.id
   direction = "INGRESS"
-  source_ranges = ["35.235.240.0/20"]
+  source_ranges = ["0.0.0.0/0"]
   target_tags = ["management-vm"]
   priority = 100
   allow {
@@ -32,12 +32,6 @@ resource "google_compute_firewall" "management_subnet_firewall" {
     ports    = ["22", "80"]
   }
 }
-
-resource "google_compute_address" "nat_ip" {
-  name = "nat-ip"
-  region = "asia-east2"
-}
-
 #NatGatway 
 resource "google_compute_router" "router" {
   name    = "my-router"

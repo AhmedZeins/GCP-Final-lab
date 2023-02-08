@@ -12,7 +12,7 @@ resource "google_project_iam_member" "gke_sa_viewer" {
 #cluster 
 resource "google_container_cluster" "private_cluster" {
   name     = "private-cluster"
-  location = "europe-west3" 
+  location = "asia-east1" 
   network = google_compute_network.vpc.self_link
   subnetwork = google_compute_subnetwork.restricted_subnet.self_link
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -43,20 +43,22 @@ resource "google_container_cluster" "private_cluster" {
 
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
+resource "google_container_node_pool" "private-cluster-node-pool" {
   name       = "my-node-pool"
-  location   = "europe-west3"
+  location   = "asia-east1"
   cluster    = google_container_cluster.private_cluster.name
-  node_count = 2
-
+  node_count = 1
+ 
   node_config {
     preemptible  = true
-    machine_type = "g1-small"
-    disk_size_gb = 10
-
+    machine_type = "e2-micro"
+    disk_type    = "pd-standard"
+    disk_size_gb = 50
+    image_type   = "ubuntu_containerd"
     service_account = google_service_account.gke_sa.email
     oauth_scopes    = [
       "https://www.googleapis.com/auth/cloud-platform"
+
     ]
   }
 }
