@@ -4,6 +4,7 @@ resource "google_compute_network" "vpc" {
   auto_create_subnetworks = false
 }
 
+
 #Subnets
 resource "google_compute_subnetwork" "management_subnet" {
   name = "management-subnet"
@@ -32,6 +33,7 @@ resource "google_compute_firewall" "management_subnet_firewall" {
     ports    = ["22", "80"]
   }
 }
+
 #NatGatway 
 resource "google_compute_router" "router" {
   name    = "my-router"
