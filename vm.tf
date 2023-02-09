@@ -50,7 +50,7 @@ resource "google_compute_instance" "private-vm" {
     mv ./kubectl ~/.local/bin/kubectl
     kubectl version --client
     sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-    # sudo USE_GKE_GCLOUD_AUTH_PLUGIN: True
-    # gcloud container clusters get-credentials private-cluster --zone asia-east2-a --project iti-makarios
+    sudo USE_GKE_GCLOUD_AUTH_PLUGIN: True
+    gcloud container clusters get-credentials private-cluster --zone=asia-east1 
   EOF
 }
